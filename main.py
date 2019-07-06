@@ -6,6 +6,7 @@ import time
 
 import settings
 from curses_tools import draw_frame, get_frame_size, read_controls
+from space_garbage import fly_garbage
 
 
 async def blink(canvas, row, column, symbol='*', offset_tics=0):
@@ -132,11 +133,14 @@ def draw(canvas):
     coroutines = []
     coroutines += generate_stars(canvas, number_of_stars=settings.NUMBER_OF_STARS)
     frames = (
-        load_frame('frames/rocket_frame_1.txt'),
-        load_frame('frames/rocket_frame_2.txt'),
+        load_frame('frames/spacecraft/rocket_frame_1.txt'),
+        load_frame('frames/spacecraft/rocket_frame_2.txt'),
     )
+    garbage_duck = load_frame('frames/garbage/duck.txt')
     spaceship = animate_spaceship(canvas, max_row_num//2, max_column_num//2, frames)
     coroutines.append(spaceship)
+    coroutines.append(fly_garbage(canvas, 10, garbage_duck))
+
     while True:
         for coroutine in coroutines.copy():
             try:
