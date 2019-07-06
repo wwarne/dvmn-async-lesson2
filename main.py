@@ -233,7 +233,6 @@ async def show_year(canvas):
 
 
 def draw(canvas):
-    coroutines = global_vars.coroutines
     canvas.nodelay(True)   # getch() will be non-blocking
     curses.curs_set(False)  # hide cursor
 
@@ -251,19 +250,19 @@ def draw(canvas):
         load_frame('frames/spacecraft/rocket_frame_2.txt'),
     )
 
-    coroutines += generate_stars(game_area, number_of_stars=settings.NUMBER_OF_STARS)
-    coroutines.append(show_year(status_bar))
-    coroutines.append(fill_orbit_with_garbage(game_area))
-    coroutines.append(animate_spaceship_frame(spaceship_frames))
-    coroutines.append(run_spaceship(game_area))
-    coroutines.append(increase_year())
-    coroutines.append(controls_writer(canvas))
+    global_vars.coroutines += generate_stars(game_area, number_of_stars=settings.NUMBER_OF_STARS)
+    global_vars.coroutines.append(show_year(status_bar))
+    global_vars.coroutines.append(fill_orbit_with_garbage(game_area))
+    global_vars.coroutines.append(animate_spaceship_frame(spaceship_frames))
+    global_vars.coroutines.append(run_spaceship(game_area))
+    global_vars.coroutines.append(increase_year())
+    global_vars.coroutines.append(controls_writer(canvas))
     while True:
-        for coroutine in coroutines.copy():
+        for coroutine in global_vars.coroutines.copy():
             try:
                 coroutine.send(None)
             except StopIteration:
-                coroutines.remove(coroutine)
+                global_vars.coroutines.remove(coroutine)
         game_area.refresh()
         game_area.border()  # re-draw the border because flying objects "eat" it.
         status_bar.refresh()
