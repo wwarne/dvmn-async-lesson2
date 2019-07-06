@@ -226,10 +226,9 @@ async def show_game_over(canvas, frame):
 
 async def show_year(canvas):
     while True:
-        message = f'{global_vars.year} {PHRASES.get(global_vars.year, "")}'
-        canvas.addstr(1, 1, message)
+        canvas.clrtoeol()
+        canvas.addstr(1, 1, f'{global_vars.year} {PHRASES.get(global_vars.year, "")}')
         await sleep(1)
-        canvas.addstr(1, 1, ' ' * len(message))
 
 
 def draw(canvas):
