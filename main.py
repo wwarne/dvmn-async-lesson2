@@ -262,9 +262,10 @@ def draw(canvas):
                 coroutine.send(None)
             except StopIteration:
                 global_vars.coroutines.remove(coroutine)
-        game_area.refresh()
+        game_area.noutrefresh()
         game_area.border()  # re-draw the border because flying objects "eat" it.
-        status_bar.refresh()
+        status_bar.noutrefresh()
+        curses.doupdate()
         time.sleep(settings.TIC_TIMEOUT)
 
 
