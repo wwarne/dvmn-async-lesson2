@@ -160,10 +160,10 @@ async def run_spaceship(canvas):
         current_y += y_speed
         current_x += x_speed
 
-        column_after_movement = current_x + spaceship_width
-        row_after_movement = current_y + spaceship_height
-        current_x = min(column_after_movement, max_x_num) - spaceship_width
-        current_y = min(row_after_movement, max_y_num) - spaceship_height
+        x_after_movement = current_x + spaceship_width
+        y_after_movement = current_y + spaceship_height
+        current_x = min(x_after_movement, max_x_num) - spaceship_width
+        current_y = min(y_after_movement, max_y_num) - spaceship_height
         current_x = max(current_x, BORDER_SIZE)
         current_y = max(current_y, BORDER_SIZE)
 
