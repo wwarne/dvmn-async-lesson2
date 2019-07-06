@@ -228,7 +228,7 @@ async def show_year(canvas):
     while True:
         message = f'{global_vars.year} {PHRASES.get(global_vars.year, "")}'
         canvas.addstr(1, 1, message)
-        await sleep(settings.TICS_PER_YEAR)
+        await sleep(1)
         canvas.addstr(1, 1, ' ' * len(message))
 
 
