@@ -137,47 +137,47 @@ async def animate_spaceship_frame(frames):
 
 
 async def run_spaceship(canvas):
-    max_row_num, max_column_num = canvas.getmaxyx()
-    max_row_num -= BORDER_SIZE
-    max_column_num -= BORDER_SIZE
+    max_y_num, max_x_num = canvas.getmaxyx()
+    max_y_num -= BORDER_SIZE
+    max_x_num -= BORDER_SIZE
 
-    row_speed = col_speed = 0
-    row, column = max_row_num // 2, max_column_num // 2
+    y_speed = x_speed = 0
+    current_y, current_x = max_y_num // 2, max_x_num // 2
 
     spaceship_height, spaceship_width = get_frame_size(global_vars.spaceship_frame)
 
     while True:
         if len(global_vars.controls_queue):
-            row_shift, column_shift, space_pressed = global_vars.controls_queue.pop(0)
+            y_shift, x_shift, space_pressed = global_vars.controls_queue.pop(0)
         else:
-            row_shift, column_shift, space_pressed = 0, 0, False
+            y_shift, x_shift, space_pressed = 0, 0, False
         if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
-            spacegun_pos_x = column + spaceship_width // 2
-            spacegun_pos_y = row
+            spacegun_pos_x = current_x + spaceship_width // 2
+            spacegun_pos_y = current_y
             global_vars.coroutines.append(fire(canvas, spacegun_pos_y, spacegun_pos_x))
 
-        row_speed, col_speed = update_speed(row_speed, col_speed, row_shift, column_shift)
-        row += row_speed
-        column += col_speed
+        y_speed, x_speed = update_speed(y_speed, x_speed, y_shift, x_shift)
+        current_y += y_speed
+        current_x += x_speed
 
-        column_after_movement = column + spaceship_width
-        row_after_movement = row + spaceship_height
-        column = min(column_after_movement, max_column_num) - spaceship_width
-        row = min(row_after_movement, max_row_num) - spaceship_height
-        column = max(column, BORDER_SIZE)
-        row = max(row, BORDER_SIZE)
+        column_after_movement = current_x + spaceship_width
+        row_after_movement = current_y + spaceship_height
+        current_x = min(column_after_movement, max_x_num) - spaceship_width
+        current_y = min(row_after_movement, max_y_num) - spaceship_height
+        current_x = max(current_x, BORDER_SIZE)
+        current_y = max(current_y, BORDER_SIZE)
 
         current_frame = global_vars.spaceship_frame
-        draw_frame(canvas, row, column, current_frame)
+        draw_frame(canvas, current_y, current_x, current_frame)
         previous_frame = current_frame
         await asyncio.sleep(0)
-        draw_frame(canvas, row, column, previous_frame, negative=True)
+        draw_frame(canvas, current_y, current_x, previous_frame, negative=True)
 
         for obstacle in obstacles:
-            if obstacle.has_collision(row, column):
+            if obstacle.has_collision(current_y, current_x):
                 frame_game_over = load_frame('frames/game_over.txt')
                 global_vars.is_game_over = True
-                await explode(canvas, row, column)
+                await explode(canvas, current_y, current_x)
                 global_vars.coroutines.append(show_game_over(canvas, frame_game_over))
                 return
 
@@ -235,13 +235,13 @@ def draw(canvas):
     canvas.nodelay(True)   # getch() will be non-blocking
     curses.curs_set(False)  # hide cursor
 
-    max_row_num, max_column_num = canvas.getmaxyx()
+    max_y_num, max_x_num = canvas.getmaxyx()
     status_bar_begin_y = status_bar_begin_x = 0
-    status_bar = canvas.derwin(STATUS_BAR_HEIGHT, max_column_num, status_bar_begin_y, status_bar_begin_x)
-    game_area_height = max_row_num - STATUS_BAR_HEIGHT - BORDER_SIZE
+    status_bar = canvas.derwin(STATUS_BAR_HEIGHT, max_x_num, status_bar_begin_y, status_bar_begin_x)
+    game_area_height = max_y_num - STATUS_BAR_HEIGHT - BORDER_SIZE
     game_area_begin_y = STATUS_BAR_HEIGHT + BORDER_SIZE
     game_area_begin_x = 0
-    game_area = canvas.derwin(game_area_height, max_column_num, game_area_begin_y, game_area_begin_x)
+    game_area = canvas.derwin(game_area_height, max_x_num, game_area_begin_y, game_area_begin_x)
     game_area.border()
 
     spaceship_frames = (
