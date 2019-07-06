@@ -6,6 +6,7 @@ Source code for simple space game with ASCII-graphics.
 
 * python 3.7+ is recommended
 * I use [poetry](https://poetry.eustace.io/) for dependency management but at this moment project uses only build-in modules. 
+* Better use full-screen mode. On small terminals you can't avoid the big cosmic objects.
 
 # How to use
 
@@ -13,31 +14,30 @@ Source code for simple space game with ASCII-graphics.
 2. Use arrow keys to control the spacecraft.
 3. After the year of 2020 you can press `space` to shoot a plasma gun.
 ```
+ 1966 Aleksei Leonov takes man's first space walk
+                                                    
 ┌───────────────────────────────────────────────────────────────────────────────────────────┐
-│           +           *               .             * *    +  *   +  .                    │
-│                                                *    **                               +    │
-│ .                 +                *            +          :              +               │
-│                        .   +   +                                         .      +         │
-│                                                      +                                    │
-│.   +   :                                              :                                   │
-│                                               .    .    *             +                   │
-│                                     +   .             *                           *    : *│
-│                      .                                      .   :                         │
-│ .                                            +            :                               │
-│ :  *                  :                    +                                          :   │
-│                          .     .                                                         *│
-│                                               .                   *                   * + │
-│                         +  :                 .'.            :                             │
-│                                              |o|         :                +     *  .      │
-│   :                          +              .'o'.                      :                  │
-│         .                           .       |.-.|                             +     + +   │
-│                                             '   '                  .                      │
-│                +                        +     )       +                 +                 │
-│                    .*                        ( )      *                 .  .              │
-│      .                             *          (          *   :                        *.  │
-│                              :            :      :                                        │
-│                                            :                     *                        │
-│        .     .                           :                  :                      +      │
+│           : +                 +                      :           .             :          │
+│      *        .                                +           +                        *     │
+│                                          +                +                               │
+│       + +   :                        :                            +                 :   **│
+│    .     :                    :                                                      +    │
+│                       +         *                                                         │
+│       +  *    *         ___     :      +      +    .    +*                                │
+│     .                 _/ o \                 .          *                                 │
+│                      /     /  :        :           .                           :          │
+│           +  +       \____/          +                          :*         :              │
+│*                     :                                                               *    │
+│  *           .  *      +    *                                           *                 │
+│                                  *               .                                .       │
+│     :           .                         .     .'.    +                                  │
+│            .                                    |o|                          *  :         │
+│                               *                .'o'.                               :      │
+│  .         ___      :        .                 |.-.|                     *             : .│
+│          _/ o \                     :      *   '   '                        :          *  │
+│   *     /     /  *      *                       ( )                             . .       │
+│         \____/      *              :             )                    :            .      │
+│        . :      *        *                      ( )                . :      :  :          │
 └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
