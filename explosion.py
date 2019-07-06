@@ -5,27 +5,27 @@ from curses_tools import draw_frame, get_frame_size
 
 EXPLOSION_FRAMES = [
     """\
-           (_) 
+           (_)
        (  (   (  (
       () (  (  )
         ( )  ()
     """,
     """\
-           (_) 
-       (  (   (   
+           (_)
+       (  (   (
          (  (  )
           )  (
     """,
     """\
-            (  
-          (   (   
+            (
+          (   (
          (     (
           )  (
     """,
     """\
-            ( 
+            (
               (
-            (  
+            (
     """,
 ]
 
