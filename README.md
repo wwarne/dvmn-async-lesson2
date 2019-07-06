@@ -1,4 +1,4 @@
-# Space Game
+# Space Game [Work in progress]
 
 Source code for simple space game with ASCII-graphics.
 
