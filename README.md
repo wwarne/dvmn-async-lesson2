@@ -1,4 +1,4 @@
-# Space Game - Lesson 2 [Work in progress]
+# Space Game - Lesson 2
 
 Source code for simple space game with ASCII-graphics.
 
@@ -10,7 +10,8 @@ Source code for simple space game with ASCII-graphics.
 # How to use
 
 1. Run command `python main.py`
-2. Use arrow keys to control the spacecraft:
+2. Use arrow keys to control the spacecraft.
+3. After the year of 2020 you can press `space` to shoot a plasma gun.
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────┐
 │           +           *               .             * *    +  *   +  .                    │
