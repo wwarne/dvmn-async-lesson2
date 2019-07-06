@@ -76,3 +76,10 @@ def get_frame_size(text):
     columns = max([len(line) for line in lines])
 
     return rows, columns
+
+
+def load_frame(filepath):
+    """Load animation frame from a file."""
+
+    with open(filepath, mode='r', encoding='utf-8') as f:
+        return f.read()
