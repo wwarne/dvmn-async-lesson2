@@ -1,17 +1,17 @@
 PHRASES = {
     # Только на английском, Repl.it ломается на кириллице
-    1957: "First Sputnik",
-    1961: "Gagarin flew!",
-    1962: "First American to orbit Earth",
-    1963: "Valentina Tereshkova, the first woman in space",
-    1965: "Aleksei Leonov takes man's first space walk",
-    1969: "Armstrong got on the moon!",
-    1971: "First orbital space station Salute-1",
-    1975: "Apollo-Soyuz Test Project",
-    1981: "Flight of the Shuttle Columbia",
+    1957: 'First Sputnik',
+    1961: 'Gagarin flew!',
+    1962: 'First American to orbit Earth',
+    1963: 'Valentina Tereshkova, the first woman in space',
+    1965: 'Aleksei Leonov takes man\'s first space walk',
+    1969: 'Armstrong got on the moon!',
+    1971: 'First orbital space station Salute-1',
+    1975: 'Apollo-Soyuz Test Project',
+    1981: 'Flight of the Shuttle Columbia',
     1998: 'ISS start building',
     2011: 'Messenger launch to Mercury',
-    2020: "Take the plasma gun! Shoot the garbage!",
+    2020: 'Take the plasma gun! Shoot the garbage!',
 }
 
 

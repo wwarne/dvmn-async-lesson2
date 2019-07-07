@@ -1,6 +1,4 @@
-"""
-This file contains variables to control the state of the game.
-"""
+"""This file contains variables to control the state of the game."""
 
 coroutines = []
 controls_queue = []

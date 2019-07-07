@@ -6,7 +6,13 @@ import time
 
 import global_vars
 import settings
-from curses_tools import draw_frame, get_frame_size, load_frame, read_controls, init_colors
+from curses_tools import (
+    draw_frame,
+    get_frame_size,
+    init_colors,
+    load_frame,
+    read_controls,
+)
 from explosion import explode
 from game_scenario import PHRASES, get_garbage_delay_tics
 from physics import update_speed
@@ -24,6 +30,11 @@ async def controls_writer(canvas):
 
 
 async def sleep(tics=1):
+    """
+    Sleep some time.
+
+    Because we can't use asyncio.sleep >0 with our own event loop.
+    """
     for _ in range(tics):
         await asyncio.sleep(0)
 

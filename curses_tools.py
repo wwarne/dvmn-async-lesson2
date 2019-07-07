@@ -1,5 +1,6 @@
 import curses
 import random
+
 import global_vars
 
 SPACE_KEY_CODE = 32
@@ -11,7 +12,6 @@ DOWN_KEY_CODE = 258
 
 def read_controls(canvas):
     """Read keys pressed and returns tuple with controls state."""
-
     rows_direction = columns_direction = 0
     space_pressed = False
 
@@ -42,9 +42,8 @@ def read_controls(canvas):
 
 def draw_frame(canvas, start_row, start_column, text, negative=False, color='white'):
     """Draw multiline text fragment on canvas. Erase text instead of drawing if negative=True is specified."""
-
     rows_number, columns_number = canvas.getmaxyx()
-    color_names = list(global_vars.colors.keys())
+
     for row, line in enumerate(text.splitlines(), round(start_row)):
         if row < 0:
             continue
@@ -69,28 +68,27 @@ def draw_frame(canvas, start_row, start_column, text, negative=False, color='whi
                 continue
 
             symbol = symbol if not negative else ' '
-            color_to_use = random.choice(color_names) if color == 'rainbow' else color
+            color_to_use = random.choice(global_vars.colors) if color == 'rainbow' else color
             canvas.addstr(row, column, symbol, global_vars.colors[color_to_use])
 
 
 def get_frame_size(text):
-    """Calculate size of multiline text fragment. Returns pair (rows number, colums number)"""
-
+    """Calculate size of multiline text fragment. Returns pair (rows number, colums number)."""
     lines = text.splitlines()
     rows = len(lines)
-    columns = max([len(line) for line in lines])
+    columns = max(len(line) for line in lines)
 
     return rows, columns
 
 
 def load_frame(filepath):
     """Load animation frame from a file."""
-
     with open(filepath, mode='r', encoding='utf-8') as f:
         return f.read()
 
 
 def init_colors():
+    """Init terminal to use colors."""
     curses.initscr()
     curses.start_color()
     curses.use_default_colors()
