@@ -10,4 +10,5 @@ spaceship_frame = ''
 year = 1957
 is_game_over = False
 colors = {}
+color_names = []
 spaceship_frame_flame = ''

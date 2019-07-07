@@ -1,4 +1,5 @@
 import curses
+import random
 import global_vars
 
 SPACE_KEY_CODE = 32
@@ -43,7 +44,7 @@ def draw_frame(canvas, start_row, start_column, text, negative=False, color='whi
     """Draw multiline text fragment on canvas. Erase text instead of drawing if negative=True is specified."""
 
     rows_number, columns_number = canvas.getmaxyx()
-
+    color_names = list(global_vars.colors.keys())
     for row, line in enumerate(text.splitlines(), round(start_row)):
         if row < 0:
             continue
@@ -68,7 +69,8 @@ def draw_frame(canvas, start_row, start_column, text, negative=False, color='whi
                 continue
 
             symbol = symbol if not negative else ' '
-            canvas.addstr(row, column, symbol, global_vars.colors[color])
+            color_to_use = random.choice(color_names) if color == 'rainbow' else color
+            canvas.addstr(row, column, symbol, global_vars.colors[color_to_use])
 
 
 def get_frame_size(text):
@@ -109,3 +111,4 @@ def init_colors():
         'red': curses.color_pair(6),
         'yellow': curses.color_pair(7),
     }
+    global_vars.color_names = list(global_vars.colors.keys())

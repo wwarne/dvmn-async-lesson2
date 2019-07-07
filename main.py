@@ -83,14 +83,14 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
     max_row, max_column = rows - 1, columns - 1
 
     # curses.beep()
-    color_names = list(global_vars.colors.keys())
+
     while 0 < row < max_row and 0 < column < max_column:
         for obstacle in obstacles:
             if obstacle.has_collision(row, column):
                 obstacles_in_last_collisions.append(obstacle)
                 await explode(canvas, obstacle.row, obstacle.column)
                 return
-        color = random.choice(color_names)
+        color = random.choice(global_vars.color_names)
         canvas.addstr(round(row), round(column), symbol, global_vars.colors[color])
         await asyncio.sleep(0)
         canvas.addstr(round(row), round(column), ' ')
@@ -208,7 +208,6 @@ async def fill_orbit_with_garbage(canvas):
     _, max_column_num = canvas.getmaxyx()
 
     frames = [load_frame(f'frames/garbage/{name}') for name in garbage_names]
-    color_names = list(global_vars.colors.keys())
     while True:
         garbage_timeout = get_garbage_delay_tics(global_vars.year)
         if garbage_timeout and not global_vars.is_game_over:
@@ -218,7 +217,7 @@ async def fill_orbit_with_garbage(canvas):
                 BORDER_SIZE,
                 max_column_num - trash_column_size - BORDER_SIZE
             )
-            random_color = random.choice(color_names)
+            random_color = random.choice(global_vars.color_names)
             global_vars.coroutines.append(
                 fly_garbage(
                     canvas=canvas,
