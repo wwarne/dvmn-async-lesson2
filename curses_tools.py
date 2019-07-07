@@ -68,7 +68,7 @@ def draw_frame(canvas, start_row, start_column, text, negative=False, color='whi
                 continue
 
             symbol = symbol if not negative else ' '
-            color_to_use = random.choice(global_vars.colors) if color == 'rainbow' else color
+            color_to_use = random.choice(global_vars.color_names) if color == 'rainbow' else color
             canvas.addstr(row, column, symbol, global_vars.colors[color_to_use])
 
 
