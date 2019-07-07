@@ -160,7 +160,7 @@ async def run_spaceship(canvas):
         else:
             y_shift, x_shift, space_pressed = 0, 0, False
         # if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
-        if space_pressed:
+        if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
             spacegun_pos_x = current_x + spaceship_width // 2
             spacegun_pos_y = current_y
             global_vars.coroutines.append(fire(canvas, spacegun_pos_y, spacegun_pos_x))
