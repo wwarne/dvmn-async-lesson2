@@ -83,14 +83,15 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
     max_row, max_column = rows - 1, columns - 1
 
     # curses.beep()
-
+    color_names = list(global_vars.colors.keys())
     while 0 < row < max_row and 0 < column < max_column:
         for obstacle in obstacles:
             if obstacle.has_collision(row, column):
                 obstacles_in_last_collisions.append(obstacle)
                 await explode(canvas, obstacle.row, obstacle.column)
                 return
-        canvas.addstr(round(row), round(column), symbol, global_vars.colors['green'])
+        color = random.choice(color_names)
+        canvas.addstr(round(row), round(column), symbol, global_vars.colors[color])
         await asyncio.sleep(0)
         canvas.addstr(round(row), round(column), ' ')
         row += rows_speed
@@ -159,7 +160,6 @@ async def run_spaceship(canvas):
             y_shift, x_shift, space_pressed = global_vars.controls_queue.pop(0)
         else:
             y_shift, x_shift, space_pressed = 0, 0, False
-        # if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
         if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
             spacegun_pos_x = current_x + spaceship_width // 2
             spacegun_pos_y = current_y
