@@ -1,3 +1,6 @@
+import curses
+import global_vars
+
 SPACE_KEY_CODE = 32
 LEFT_KEY_CODE = 260
 RIGHT_KEY_CODE = 261
@@ -36,7 +39,7 @@ def read_controls(canvas):
     return rows_direction, columns_direction, space_pressed
 
 
-def draw_frame(canvas, start_row, start_column, text, negative=False):
+def draw_frame(canvas, start_row, start_column, text, negative=False, color='white'):
     """Draw multiline text fragment on canvas. Erase text instead of drawing if negative=True is specified."""
 
     rows_number, columns_number = canvas.getmaxyx()
@@ -65,7 +68,7 @@ def draw_frame(canvas, start_row, start_column, text, negative=False):
                 continue
 
             symbol = symbol if not negative else ' '
-            canvas.addch(row, column, symbol)
+            canvas.addstr(row, column, symbol, global_vars.colors[color])
 
 
 def get_frame_size(text):
@@ -83,3 +86,26 @@ def load_frame(filepath):
 
     with open(filepath, mode='r', encoding='utf-8') as f:
         return f.read()
+
+
+def init_colors():
+    curses.initscr()
+    curses.start_color()
+    curses.use_default_colors()
+    # default 8 colors of terminal
+    curses.init_pair(1, curses.COLOR_WHITE, -1)
+    curses.init_pair(2, curses.COLOR_BLUE, -1)
+    curses.init_pair(3, curses.COLOR_CYAN, -1)
+    curses.init_pair(4, curses.COLOR_GREEN, -1)
+    curses.init_pair(5, curses.COLOR_MAGENTA, -1)
+    curses.init_pair(6, curses.COLOR_RED, -1)
+    curses.init_pair(7, curses.COLOR_YELLOW, -1)
+    global_vars.colors = {
+        'white': curses.color_pair(1),
+        'blue': curses.color_pair(2),
+        'cyan': curses.color_pair(3),
+        'green': curses.color_pair(4),
+        'magenta': curses.color_pair(5),
+        'red': curses.color_pair(6),
+        'yellow': curses.color_pair(7),
+    }
