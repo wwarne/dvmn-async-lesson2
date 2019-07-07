@@ -9,3 +9,5 @@ obstacles_in_last_collisions = []
 spaceship_frame = ''
 year = 1957
 is_game_over = False
+colors = {}
+spaceship_frame_flame = ''

@@ -6,7 +6,7 @@ import time
 
 import global_vars
 import settings
-from curses_tools import draw_frame, get_frame_size, load_frame, read_controls
+from curses_tools import draw_frame, get_frame_size, load_frame, read_controls, init_colors
 from explosion import explode
 from game_scenario import PHRASES, get_garbage_delay_tics
 from physics import update_speed
@@ -67,10 +67,10 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
 
     row, column = start_row, start_column
 
-    canvas.addstr(round(row), round(column), '*')
+    canvas.addstr(round(row), round(column), '*', global_vars.colors['red'])
     await asyncio.sleep(0)
 
-    canvas.addstr(round(row), round(column), 'O')
+    canvas.addstr(round(row), round(column), 'O', global_vars.colors['cyan'])
     await asyncio.sleep(0)
     canvas.addstr(round(row), round(column), ' ')
 
@@ -90,7 +90,7 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
                 obstacles_in_last_collisions.append(obstacle)
                 await explode(canvas, obstacle.row, obstacle.column)
                 return
-        canvas.addstr(round(row), round(column), symbol)
+        canvas.addstr(round(row), round(column), symbol, global_vars.colors['green'])
         await asyncio.sleep(0)
         canvas.addstr(round(row), round(column), ' ')
         row += rows_speed
@@ -136,6 +136,13 @@ async def animate_spaceship_frame(frames):
         await asyncio.sleep(0)
 
 
+async def animate_flame_frame(frames):
+    """Changes current spaceship frame."""
+    for frame in itertools.cycle(frames):
+        global_vars.spaceship_frame_flame = frame
+        await asyncio.sleep(0)
+
+
 async def run_spaceship(canvas):
     max_y_num, max_x_num = canvas.getmaxyx()
     max_y_num -= BORDER_SIZE
@@ -145,13 +152,15 @@ async def run_spaceship(canvas):
     current_y, current_x = max_y_num // 2, max_x_num // 2
 
     spaceship_height, spaceship_width = get_frame_size(global_vars.spaceship_frame)
+    flame_height, _ = get_frame_size(global_vars.spaceship_frame_flame)
 
     while True:
         if len(global_vars.controls_queue):
             y_shift, x_shift, space_pressed = global_vars.controls_queue.pop(0)
         else:
             y_shift, x_shift, space_pressed = 0, 0, False
-        if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
+        # if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
+        if space_pressed:
             spacegun_pos_x = current_x + spaceship_width // 2
             spacegun_pos_y = current_y
             global_vars.coroutines.append(fire(canvas, spacegun_pos_y, spacegun_pos_x))
@@ -161,17 +170,21 @@ async def run_spaceship(canvas):
         current_x += x_speed
 
         x_after_movement = current_x + spaceship_width
-        y_after_movement = current_y + spaceship_height
+        y_after_movement = current_y + spaceship_height + flame_height
         current_x = min(x_after_movement, max_x_num) - spaceship_width
-        current_y = min(y_after_movement, max_y_num) - spaceship_height
+        current_y = min(y_after_movement, max_y_num) - spaceship_height - flame_height
         current_x = max(current_x, BORDER_SIZE)
         current_y = max(current_y, BORDER_SIZE)
 
         current_frame = global_vars.spaceship_frame
+        current_frame_flame = global_vars.spaceship_frame_flame
         draw_frame(canvas, current_y, current_x, current_frame)
+        draw_frame(canvas, current_y + spaceship_height, current_x, current_frame_flame, color='yellow')
         previous_frame = current_frame
+        previous_flame_frame = current_frame_flame
         await asyncio.sleep(0)
         draw_frame(canvas, current_y, current_x, previous_frame, negative=True)
+        draw_frame(canvas, current_y + spaceship_height, current_x, previous_flame_frame, negative=True, color='yellow')
 
         for obstacle in obstacles:
             if obstacle.has_collision(current_y, current_x):
@@ -248,11 +261,16 @@ def draw(canvas):
         load_frame('frames/spacecraft/rocket_frame_1.txt'),
         load_frame('frames/spacecraft/rocket_frame_2.txt'),
     )
+    flame_frames = (
+        load_frame('frames/spacecraft/flame_1.txt'),
+        load_frame('frames/spacecraft/flame_2.txt'),
+    )
 
     global_vars.coroutines += generate_stars(game_area, number_of_stars=settings.NUMBER_OF_STARS)
     global_vars.coroutines.append(show_year(status_bar))
     global_vars.coroutines.append(fill_orbit_with_garbage(game_area))
     global_vars.coroutines.append(animate_spaceship_frame(spaceship_frames))
+    global_vars.coroutines.append(animate_flame_frame(flame_frames))
     global_vars.coroutines.append(run_spaceship(game_area))
     global_vars.coroutines.append(increase_year())
     global_vars.coroutines.append(controls_writer(canvas))
@@ -271,4 +289,5 @@ def draw(canvas):
 
 if __name__ == '__main__':
     curses.update_lines_cols()
+    init_colors()
     curses.wrapper(draw)
