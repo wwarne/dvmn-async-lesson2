@@ -137,7 +137,7 @@ async def animate_spaceship_frame(frames):
 
 
 async def animate_flame_frame(frames):
-    """Changes current spaceship frame."""
+    """Changes current flame frame."""
     for frame in itertools.cycle(frames):
         global_vars.spaceship_frame_flame = frame
         await asyncio.sleep(0)
@@ -208,6 +208,7 @@ async def fill_orbit_with_garbage(canvas):
     _, max_column_num = canvas.getmaxyx()
 
     frames = [load_frame(f'frames/garbage/{name}') for name in garbage_names]
+    color_names = list(global_vars.colors.keys())
     while True:
         garbage_timeout = get_garbage_delay_tics(global_vars.year)
         if garbage_timeout and not global_vars.is_game_over:
@@ -217,11 +218,13 @@ async def fill_orbit_with_garbage(canvas):
                 BORDER_SIZE,
                 max_column_num - trash_column_size - BORDER_SIZE
             )
+            random_color = random.choice(color_names)
             global_vars.coroutines.append(
                 fly_garbage(
                     canvas=canvas,
                     column=random_column,
                     garbage_frame=current_trash_frame,
+                    color=random_color,
                 )
             )
         await sleep(garbage_timeout or 1)

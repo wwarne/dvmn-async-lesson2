@@ -5,7 +5,7 @@ from global_vars import obstacles, obstacles_in_last_collisions
 from obstacles import Obstacle
 
 
-async def fly_garbage(canvas, column, garbage_frame, speed=0.5):
+async def fly_garbage(canvas, column, garbage_frame, speed=0.5, color='white'):
     """Animate garbage, flying from top to bottom. Сolumn position will stay the same, as specified on start."""
     rows_number, columns_number = canvas.getmaxyx()
 
@@ -22,9 +22,9 @@ async def fly_garbage(canvas, column, garbage_frame, speed=0.5):
             if obstacle in obstacles_in_last_collisions:
                 obstacles_in_last_collisions.remove(obstacle)
                 return
-            draw_frame(canvas, row, column, garbage_frame)
+            draw_frame(canvas, row, column, garbage_frame, color=color)
             await asyncio.sleep(0)
-            draw_frame(canvas, row, column, garbage_frame, negative=True)
+            draw_frame(canvas, row, column, garbage_frame, negative=True, color=color)
             row += speed
             obstacle.row = row
     finally:
