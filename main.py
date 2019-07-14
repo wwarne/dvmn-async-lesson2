@@ -171,7 +171,8 @@ async def run_spaceship(canvas):
             y_shift, x_shift, space_pressed = global_vars.controls_queue.pop(0)
         else:
             y_shift, x_shift, space_pressed = 0, 0, False
-        if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
+        # if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
+        if space_pressed:
             spacegun_pos_x = current_x + spaceship_width // 2
             spacegun_pos_y = current_y
             global_vars.coroutines.append(fire(canvas, spacegun_pos_y, spacegun_pos_x))
@@ -199,7 +200,7 @@ async def run_spaceship(canvas):
 
         for obstacle in obstacles:
             if obstacle.has_collision(current_y, current_x):
-                frame_game_over = load_frame('frames/game_over.txt')
+                frame_game_over = load_frame(settings.GAME_OVER_FRAME_PATH)
                 global_vars.is_game_over = True
                 await explode(canvas, current_y, current_x)
                 global_vars.coroutines.append(show_game_over(canvas, frame_game_over))
@@ -208,17 +209,9 @@ async def run_spaceship(canvas):
 
 async def fill_orbit_with_garbage(canvas):
     """Spawn a lot of space garbage."""
-    garbage_names = [
-        'duck.txt',
-        'hubble.txt',
-        'lamp.txt',
-        'trash_large.txt',
-        'trash_small.txt',
-        'trash_xl.txt'
-    ]
     _, max_column_num = canvas.getmaxyx()
 
-    frames = [load_frame(f'frames/garbage/{name}') for name in garbage_names]
+    frames = [load_frame(filepath) for filepath in settings.GARBAGE_PATHS]
     while True:
         garbage_timeout = get_garbage_delay_tics(global_vars.year)
         if garbage_timeout and not global_vars.is_game_over:
@@ -270,14 +263,8 @@ def draw(canvas):
     game_area = canvas.derwin(game_area_height, max_x_num, game_area_begin_y, game_area_begin_x)
     game_area.border()
 
-    spaceship_frames = (
-        load_frame('frames/spacecraft/rocket_frame_1.txt'),
-        load_frame('frames/spacecraft/rocket_frame_2.txt'),
-    )
-    flame_frames = (
-        load_frame('frames/spacecraft/flame_1.txt'),
-        load_frame('frames/spacecraft/flame_2.txt'),
-    )
+    spaceship_frames = (load_frame(name) for name in settings.SPACECRAFT_PATHS)
+    flame_frames = (load_frame(name) for name in settings.SPACECRAFT_FLAME_PATHS)
 
     global_vars.coroutines += generate_stars(game_area, number_of_stars=settings.NUMBER_OF_STARS)
     global_vars.coroutines.append(show_year(status_bar))
