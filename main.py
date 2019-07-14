@@ -22,7 +22,7 @@ BORDER_SIZE = 1
 STATUS_BAR_HEIGHT = 2
 
 
-async def controls_writer(canvas):
+async def process_input(canvas):
     """Reads user's input and adds it to a queue."""
     while True:
         global_vars.controls_queue.append(read_controls(canvas))
@@ -286,7 +286,7 @@ def draw(canvas):
     global_vars.coroutines.append(animate_flame_frame(flame_frames))
     global_vars.coroutines.append(run_spaceship(game_area))
     global_vars.coroutines.append(increase_year())
-    global_vars.coroutines.append(controls_writer(canvas))
+    global_vars.coroutines.append(process_input(canvas))
     while True:
         for coroutine in global_vars.coroutines.copy():
             try:
