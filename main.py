@@ -91,7 +91,7 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
     symbol = '-' if columns_speed else '|'
 
     rows, columns = canvas.getmaxyx()
-    max_row, max_column = rows - 1, columns - 1
+    max_row, max_column = rows - BORDER_SIZE, columns - BORDER_SIZE
 
     # curses.beep()
 
@@ -122,16 +122,16 @@ def generate_stars(canvas, number_of_stars):
     :return: list with coroutines
     """
     max_row_num, max_column_num = canvas.getmaxyx()
-    max_row_num -= 2 * BORDER_SIZE  # 2 for borders
-    max_column_num -= 2 * BORDER_SIZE
+    max_row_num -= BORDER_SIZE
+    max_column_num -= BORDER_SIZE
     stars = []
     maximum_stars = (max_row_num * max_column_num) // 2
     if number_of_stars > maximum_stars:
         number_of_stars = maximum_stars
     used_coordinates = []
     while len(stars) < number_of_stars:
-        column = random.randint(BORDER_SIZE, max_column_num)
-        row = random.randint(BORDER_SIZE, max_row_num)
+        column = random.randrange(BORDER_SIZE, max_column_num)
+        row = random.randrange(BORDER_SIZE, max_row_num)
         if (row, column) in used_coordinates:
             continue
         star_type = random.choice('+*.:')
