@@ -130,8 +130,8 @@ def generate_stars(canvas, number_of_stars):
         number_of_stars = maximum_stars
     used_coordinates = []
     while len(stars) < number_of_stars:
-        column = random.randint(1, max_column_num)
-        row = random.randint(1, max_row_num)
+        column = random.randint(BORDER_SIZE, max_column_num)
+        row = random.randint(BORDER_SIZE, max_row_num)
         if (row, column) in used_coordinates:
             continue
         star_type = random.choice('+*.:')
