@@ -156,53 +156,53 @@ async def animate_flame_frame(frames):
 
 
 async def run_spaceship(canvas):
-    max_y_num, max_x_num = canvas.getmaxyx()
-    max_y_num -= BORDER_SIZE
-    max_x_num -= BORDER_SIZE
+    max_row_num, max_col_num = canvas.getmaxyx()
+    max_row_num -= BORDER_SIZE
+    max_col_num -= BORDER_SIZE
 
-    y_speed = x_speed = 0
-    current_y, current_x = max_y_num // 2, max_x_num // 2
+    row_speed = col_speed = 0
+    current_row, current_col = max_row_num // 2, max_col_num // 2
 
     spaceship_height, spaceship_width = get_frame_size(global_vars.spaceship_frame)
     flame_height, _ = get_frame_size(global_vars.spaceship_frame_flame)
 
     while True:
         if len(global_vars.controls_queue):
-            y_shift, x_shift, space_pressed = global_vars.controls_queue.pop(0)
+            row_shift, col_shift, space_pressed = global_vars.controls_queue.pop(0)
         else:
-            y_shift, x_shift, space_pressed = 0, 0, False
+            row_shift, col_shift, space_pressed = 0, 0, False
         # if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
         if space_pressed:
-            spacegun_pos_x = current_x + spaceship_width // 2
-            spacegun_pos_y = current_y
-            global_vars.coroutines.append(fire(canvas, spacegun_pos_y, spacegun_pos_x))
+            spacegun_pos_col = current_col + spaceship_width // 2
+            spacegun_pos_row = current_row
+            global_vars.coroutines.append(fire(canvas, spacegun_pos_row, spacegun_pos_col))
 
-        y_speed, x_speed = update_speed(y_speed, x_speed, y_shift, x_shift)
-        current_y += y_speed
-        current_x += x_speed
+        row_speed, col_speed = update_speed(row_speed, col_speed, row_shift, col_shift)
+        current_row += row_speed
+        current_col += col_speed
 
-        x_after_movement = current_x + spaceship_width
-        y_after_movement = current_y + spaceship_height + flame_height
-        current_x = min(x_after_movement, max_x_num) - spaceship_width
-        current_y = min(y_after_movement, max_y_num) - spaceship_height - flame_height
-        current_x = max(current_x, BORDER_SIZE)
-        current_y = max(current_y, BORDER_SIZE)
+        col_after_movement = current_col + spaceship_width
+        row_after_movement = current_row + spaceship_height + flame_height
+        current_col = min(col_after_movement, max_col_num) - spaceship_width
+        current_row = min(row_after_movement, max_row_num) - spaceship_height - flame_height
+        current_col = max(current_col, BORDER_SIZE)
+        current_row = max(current_row, BORDER_SIZE)
 
         current_frame = global_vars.spaceship_frame
         current_frame_flame = global_vars.spaceship_frame_flame
-        draw_frame(canvas, current_y, current_x, current_frame)
-        draw_frame(canvas, current_y + spaceship_height, current_x, current_frame_flame, color='yellow')
+        draw_frame(canvas, current_row, current_col, current_frame)
+        draw_frame(canvas, current_row + spaceship_height, current_col, current_frame_flame, color='yellow')
         previous_frame = current_frame
         previous_flame_frame = current_frame_flame
         await asyncio.sleep(0)
-        draw_frame(canvas, current_y, current_x, previous_frame, negative=True)
-        draw_frame(canvas, current_y + spaceship_height, current_x, previous_flame_frame, negative=True, color='yellow')
+        draw_frame(canvas, current_row, current_col, previous_frame, negative=True)
+        draw_frame(canvas, current_row + spaceship_height, current_col, previous_flame_frame, negative=True, color='yellow')
 
         for obstacle in obstacles:
-            if obstacle.has_collision(current_y, current_x):
+            if obstacle.has_collision(current_row, current_col):
                 frame_game_over = load_frame(settings.GAME_OVER_FRAME_PATH)
                 global_vars.is_game_over = True
-                await explode(canvas, current_y, current_x)
+                await explode(canvas, current_row, current_col)
                 global_vars.coroutines.append(show_game_over(canvas, frame_game_over))
                 return
 
@@ -234,12 +234,12 @@ async def fill_orbit_with_garbage(canvas):
 
 
 async def show_game_over(canvas, frame):
-    max_pos_y, max_pox_x = canvas.getmaxyx()
-    message_size_y, message_size_x = get_frame_size(frame)
-    message_pos_y = (max_pos_y // 2) - (message_size_y // 2)
-    message_pos_x = (max_pox_x // 2) - (message_size_x // 2)
+    max_pos_row, max_pox_col = canvas.getmaxyx()
+    message_size_row, message_size_col = get_frame_size(frame)
+    message_pos_row = (max_pos_row // 2) - (message_size_row // 2)
+    message_pos_col = (max_pox_col // 2) - (message_size_col // 2)
     while True:
-        draw_frame(canvas, message_pos_y, message_pos_x, frame)
+        draw_frame(canvas, message_pos_row, message_pos_col, frame)
         await asyncio.sleep(0)
 
 
