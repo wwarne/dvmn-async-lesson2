@@ -121,17 +121,18 @@ def generate_stars(canvas, number_of_stars):
     :param number_of_stars: number of stars
     :return: list with coroutines
     """
+    OFFSET = 1  # offset from screen borders needed to draw canvas.border()
     max_row_num, max_column_num = canvas.getmaxyx()
-    max_row_num -= BORDER_SIZE
-    max_column_num -= BORDER_SIZE
+    max_row_num -= OFFSET
+    max_column_num -= OFFSET
     stars = []
     maximum_stars = (max_row_num * max_column_num) // 2
     if number_of_stars > maximum_stars:
         number_of_stars = maximum_stars
     used_coordinates = []
     while len(stars) < number_of_stars:
-        column = random.randrange(BORDER_SIZE, max_column_num)
-        row = random.randrange(BORDER_SIZE, max_row_num)
+        column = random.randrange(OFFSET, max_column_num)
+        row = random.randrange(OFFSET, max_row_num)
         if (row, column) in used_coordinates:
             continue
         star_type = random.choice('+*.:')
