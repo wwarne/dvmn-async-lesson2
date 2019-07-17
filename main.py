@@ -257,9 +257,11 @@ def draw(canvas):
     max_y_num, max_x_num = canvas.getmaxyx()
     status_bar_begin_y = status_bar_begin_x = 0
     status_bar = canvas.derwin(STATUS_BAR_HEIGHT, max_x_num, status_bar_begin_y, status_bar_begin_x)
-    game_area_height = max_y_num - STATUS_BAR_HEIGHT - BORDER_SIZE
+
+    game_area_height = max_y_num - STATUS_BAR_HEIGHT - BORDER_SIZE * 2
     game_area_begin_y = STATUS_BAR_HEIGHT + BORDER_SIZE
-    game_area_begin_x = 0
+    game_area_begin_x = BORDER_SIZE
+    max_x_num = max_x_num - BORDER_SIZE * 2
     game_area = canvas.derwin(game_area_height, max_x_num, game_area_begin_y, game_area_begin_x)
     game_area.border()
 
