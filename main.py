@@ -168,7 +168,8 @@ async def run_spaceship(canvas):
 
     while True:
         if len(global_vars.controls_queue):
-            row_shift, col_shift, space_pressed = global_vars.controls_queue.pop(0)
+            row_shift, col_shift, space_pressed = global_vars.controls_queue.pop()
+            global_vars.controls_queue.clear()
         else:
             row_shift, col_shift, space_pressed = 0, 0, False
         # if space_pressed and global_vars.year >= settings.PLASMA_GUN_YEAR:
