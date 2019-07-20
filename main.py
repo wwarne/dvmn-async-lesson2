@@ -18,7 +18,8 @@ from game_scenario import PHRASES, get_garbage_delay_tics
 from physics import update_speed
 from space_garbage import fly_garbage, obstacles, obstacles_in_last_collisions
 
-BORDER_SIZE = 1
+BORDER_MARGIN = 1  # space between the edges of the screen and working area
+BORDER_THICKNESS = 1  # it can only be 1. you can't change thickness of window.border()
 STATUS_BAR_HEIGHT = 2
 
 
@@ -91,7 +92,7 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
     symbol = '-' if columns_speed else '|'
 
     rows, columns = canvas.getmaxyx()
-    max_row, max_column = rows - BORDER_SIZE, columns - BORDER_SIZE
+    max_row, max_column = rows - BORDER_MARGIN, columns - BORDER_MARGIN
 
     # curses.beep()
 
@@ -121,18 +122,17 @@ def generate_stars(canvas, number_of_stars):
     :param number_of_stars: number of stars
     :return: list with coroutines
     """
-    PADDING = 1  # offset from screen borders needed to not to put a star on top of canvas.border().
     max_row_num, max_column_num = canvas.getmaxyx()
-    max_row_num -= PADDING
-    max_column_num -= PADDING
+    max_row_num -= BORDER_THICKNESS
+    max_column_num -= BORDER_THICKNESS
     stars = []
     maximum_stars = (max_row_num * max_column_num) // 2
     if number_of_stars > maximum_stars:
         number_of_stars = maximum_stars
     used_coordinates = []
     while len(stars) < number_of_stars:
-        column = random.randrange(PADDING, max_column_num)
-        row = random.randrange(PADDING, max_row_num)
+        column = random.randrange(BORDER_THICKNESS, max_column_num)
+        row = random.randrange(BORDER_THICKNESS, max_row_num)
         if (row, column) in used_coordinates:
             continue
         star_type = random.choice('+*.:')
@@ -158,8 +158,8 @@ async def animate_flame_frame(frames):
 
 async def run_spaceship(canvas):
     max_row_num, max_col_num = canvas.getmaxyx()
-    max_row_num -= BORDER_SIZE
-    max_col_num -= BORDER_SIZE
+    max_row_num -= BORDER_MARGIN
+    max_col_num -= BORDER_MARGIN
 
     row_speed = col_speed = 0
     current_row, current_col = max_row_num // 2, max_col_num // 2
@@ -187,8 +187,8 @@ async def run_spaceship(canvas):
         row_after_movement = current_row + spaceship_height + flame_height
         current_col = min(col_after_movement, max_col_num) - spaceship_width
         current_row = min(row_after_movement, max_row_num) - spaceship_height - flame_height
-        current_col = max(current_col, BORDER_SIZE)
-        current_row = max(current_row, BORDER_SIZE)
+        current_col = max(current_col, BORDER_MARGIN)
+        current_row = max(current_row, BORDER_MARGIN)
 
         current_frame = global_vars.spaceship_frame
         current_frame_flame = global_vars.spaceship_frame_flame
@@ -220,8 +220,8 @@ async def fill_orbit_with_garbage(canvas):
             current_trash_frame = random.choice(frames)
             _, trash_column_size = get_frame_size(current_trash_frame)
             random_column = random.randint(
-                BORDER_SIZE,
-                max_column_num - trash_column_size - BORDER_SIZE
+                BORDER_MARGIN,
+                max_column_num - trash_column_size - BORDER_MARGIN
             )
             random_color = random.choice(global_vars.color_names)
             global_vars.coroutines.append(
@@ -260,10 +260,10 @@ def draw(canvas):
     status_bar_begin_y = status_bar_begin_x = 0
     status_bar = canvas.derwin(STATUS_BAR_HEIGHT, max_x_num, status_bar_begin_y, status_bar_begin_x)
 
-    game_area_height = max_y_num - STATUS_BAR_HEIGHT - BORDER_SIZE * 2
-    game_area_begin_y = STATUS_BAR_HEIGHT + BORDER_SIZE
-    game_area_begin_x = BORDER_SIZE
-    max_x_num = max_x_num - BORDER_SIZE * 2
+    game_area_height = max_y_num - STATUS_BAR_HEIGHT - BORDER_MARGIN * 2
+    game_area_begin_y = STATUS_BAR_HEIGHT + BORDER_MARGIN
+    game_area_begin_x = BORDER_MARGIN
+    max_x_num = max_x_num - BORDER_MARGIN * 2
     game_area = canvas.derwin(game_area_height, max_x_num, game_area_begin_y, game_area_begin_x)
     game_area.border()
 
