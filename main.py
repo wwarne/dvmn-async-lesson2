@@ -76,7 +76,6 @@ async def blink(canvas, row, column, symbol='*', offset_tics=0):
 
 async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0):
     """Display animation of gun shot. Direction and speed can be specified."""
-
     row, column = start_row, start_column
 
     canvas.addstr(round(row), round(column), '*', global_vars.colors['red'])
@@ -157,6 +156,7 @@ async def animate_flame_frame(frames):
 
 
 async def run_spaceship(canvas):
+    """Spaceship moving, firing, collision detection."""
     max_row_num, max_col_num = canvas.getmaxyx()
 
     max_row_num -= BORDER_THICKNESS
@@ -221,7 +221,7 @@ async def fill_orbit_with_garbage(canvas):
             _, trash_column_size = get_frame_size(current_trash_frame)
             random_column = random.randint(
                 BORDER_MARGIN,
-                max_column_num - trash_column_size - BORDER_MARGIN
+                max_column_num - trash_column_size - BORDER_MARGIN,
             )
             random_color = random.choice(global_vars.color_names)
             global_vars.coroutines.append(

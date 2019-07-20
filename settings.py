@@ -24,8 +24,8 @@ SPACECRAFT_FRAMES_DIR = FRAMES_DIR.joinpath('spacecraft')
 
 GAME_OVER_FRAME_PATH = FRAMES_DIR.joinpath('game_over.txt')
 
-# You can comment out some names if you don't want to see some garbage objects.
-# Or add the new ones.
+# You can comment out some names if you don't want to see particular garbage objects.
+# Or you can add the new ones.
 GARBAGE_PATHS = [
     GARBAGE_FRAMES_DIR.joinpath('duck.txt'),
     GARBAGE_FRAMES_DIR.joinpath('hubble.txt'),
