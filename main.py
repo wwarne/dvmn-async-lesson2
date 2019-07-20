@@ -158,8 +158,9 @@ async def animate_flame_frame(frames):
 
 async def run_spaceship(canvas):
     max_row_num, max_col_num = canvas.getmaxyx()
-    max_row_num -= BORDER_MARGIN
-    max_col_num -= BORDER_MARGIN
+
+    max_row_num -= BORDER_THICKNESS
+    max_col_num -= BORDER_THICKNESS
 
     row_speed = col_speed = 0
     current_row, current_col = max_row_num // 2, max_col_num // 2
@@ -187,8 +188,8 @@ async def run_spaceship(canvas):
         row_after_movement = current_row + spaceship_height + flame_height
         current_col = min(col_after_movement, max_col_num) - spaceship_width
         current_row = min(row_after_movement, max_row_num) - spaceship_height - flame_height
-        current_col = max(current_col, BORDER_MARGIN)
-        current_row = max(current_row, BORDER_MARGIN)
+        current_col = max(current_col, BORDER_THICKNESS)
+        current_row = max(current_row, BORDER_THICKNESS)
 
         current_frame = global_vars.spaceship_frame
         current_frame_flame = global_vars.spaceship_frame_flame
